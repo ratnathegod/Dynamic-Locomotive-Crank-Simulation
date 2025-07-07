@@ -1,0 +1,31 @@
+clc
+clear
+close all
+
+r = 0.004 ; %m 7.75cm
+d = 0.012 ; %m 15.25
+l = 0.02 ; %m 25.5mm
+theta = linspace (0, 6*pi, 1000) ; %rad
+w = pi/2 ; %rad/s
+
+[v_mod, beta] = LCSMODEL(r,d,l,theta,w) ; %output is in m/s
+v_mod = v_mod*100000 ; %change to mm/s
+
+[theta_exp,w_exp,v_exp,time] = LCSDATA("Test1_5pt5V");
+
+figure('Position', [100 100 800 600])
+theta_deg = theta * 180/pi;  %convert radians to degrees
+plot(theta_deg, v_mod(:, 1:length(v_mod)-1), 'Color', 'B')
+hold on
+plot(theta_exp,v_exp,'Color','R');
+grid on
+xlabel('Theta (Degrees)')
+ylabel('Velocity (mm/s)')
+title('Velocity vs. Theta')
+%ax1 = gca;  %get current axes
+%ax1.XTick = 0:90:6*360;
+%ylim([-1, 1])
+hold off
+
+%this plot looks correct as it oscillated between positive and negative
+%values for the velocity, as it should with the given motion. 
